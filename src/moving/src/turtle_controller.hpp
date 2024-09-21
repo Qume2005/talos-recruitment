@@ -74,6 +74,8 @@ private:
     void pose_callback(const turtlesim::msg::Pose::SharedPtr msg);
     void timer_callback();
     void wait_callback();
+    inline double target_x() const;
+    inline double target_y() const;
 };
 
 #endif // TURTLE_CONTROLLER_HPP

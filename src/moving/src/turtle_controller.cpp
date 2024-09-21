@@ -4,14 +4,24 @@
 #define target_y std::get<1>(*current_target_iter_)
 
 void TurtleController::spawn_turtle(float x, float y, float theta, const std::string &name) {
-        auto request = std::make_shared<turtlesim::srv::Spawn::Request>();
-        request->x = x;
-        request->y = y;
-        request->theta = theta;
-        request->name = name;
+    auto request = std::make_shared<turtlesim::srv::Spawn::Request>();
+    request->x = x;
+    request->y = y;
+    request->theta = theta;
+    request->name = name;
 
-        spawn_client_->async_send_request(request);
-    }
+    // 异步发送请求并处理响应
+    auto future = spawn_client_->async_send_request(request,
+        [this](rclcpp::Client<turtlesim::srv::Spawn>::SharedFuture future) {
+            try {
+                // 获取响应
+                future.get();
+                RCLCPP_INFO(this->get_logger(), "Turtle spawned at: (%.2f,%.2f).", current_pose_.x, current_pose_.y);
+            } catch (const std::exception &e) {
+                RCLCPP_ERROR(this->get_logger(), "Failed to spawn turtle: %s", e.what());
+            }
+        });
+}
 
 void TurtleController::pose_callback(const turtlesim::msg::Pose::SharedPtr msg) {
     current_pose_ = *msg;
