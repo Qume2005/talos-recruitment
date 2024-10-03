@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/include/**",
                 "/opt/ros/${ROS_DISTRO}/include/**"
             ],
             "defines": [],
