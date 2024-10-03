@@ -71,7 +71,7 @@ source /opt/ros/humble/setup.bash
 
 ### 启动*turtle_controller*
 
-`ros2 run moving turtle_controller`
+`ros2 run moving task1`
 
 
 
